@@ -44,11 +44,14 @@ firebase.auth().onAuthStateChanged(async function(user) {
     // Grab a reference to the element with class name "restaurants" in memory
     let restaurantsDiv = document.querySelector(`.restaurants`)
 
-        // Loop through the JSON data, for each Object representing a post:
+        // Loop through the JSON data, for each Object representing a restaurant:
         for (let i=0; i < json.length; i++) {  
     
           // Store each object ("post") in memory
           let restaurant = json[i]
+
+          // Store restaurant ID
+          let restaurantId = restaurant.id
     
           // Create some markup using the post data, insert into the "posts" element
           restaurantsDiv.insertAdjacentHTML(`beforeend`,
@@ -68,11 +71,14 @@ firebase.auth().onAuthStateChanged(async function(user) {
             <div class="md:mx-0 mx-4">
             <span>${restaurant.rating}/5 Stars</span>
           </div> 
-          <button class="visited text-blue-500 font-bold md:mx-0 mx-4">
+          <button class="id = visited-${restaurantId} text-blue-500 font-bold md:mx-0 mx-4">
           <span>Mark as Visited</span>
         </button> 
           </div>`)
+      
+
       }
+    
 
     // Initializes FirebaseUI Auth
     let ui = new firebaseui.auth.AuthUI(firebase.auth())
