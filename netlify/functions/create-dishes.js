@@ -8,8 +8,8 @@ exports.handler = async function(event) {
 
   // get the three querystring parameters and store in memory
   let restaurantId = event.queryStringParameters.restaurantId
-  let userName = event.queryStringParameters.userName
-  let body = event.queryStringParameters.body
+  let userUid = event.queryStringParameters.userUid
+  let dishName = event.queryStringParameters.dishName
 
 
   // establish a connection to firebase in memory
@@ -18,9 +18,8 @@ exports.handler = async function(event) {
   // create a new post, wait for it to return
   await db.collection(`dishes`).add({
     restaurantId: restaurantId,
-    userName: userName,
-    body: body,
-    created: firebase.firestore.FieldValue.serverTimestamp()
+    userUid: userUid,
+    dishName: dishName,
   })
 
   return {

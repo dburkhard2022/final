@@ -25,7 +25,7 @@ exports.handler = async function(event) {
 
     // create an Object to be added to the return value of our lambda
     let restaurantObject = {
-      id: restaurantId,
+      restaurantId: restaurantId,
       name: restaurantData.name,
       imageURL: restaurantData.imageURL,
       cuisine: restaurantData.cuisine,
@@ -50,11 +50,11 @@ exports.handler = async function(event) {
     
           // create an Object to be added to the visitors Array of the post
           let visitorObject = {
-            id: visitorId,
+            visitorId: visitorId,
             userUid: visitorData.userUid,
             dishes: []
           }
-                      // get the dishes for this post, wait for it to return, store in memory
+            // get the dishes for this post, wait for it to return, store in memory
             let dishesQuery = await db.collection(`dishes`).where(`restaurantId`, `==`, restaurantId).get()
 
             // get the documents from the query
@@ -70,18 +70,18 @@ exports.handler = async function(event) {
         
               // create an Object to be added to the dishes Array of the post
               let dishObject = {
-                id: dishId,
-                userName: visitorData.userName,
-                body: dishData.body
+                dishId: dishId,
+                dishName: dishData.dishName,
               }
 
               // add the object to the visitor
               visitorObject.dishes.push(dishObject)
 
-          // add the Object to the post
-          restaurantObject.visitors.push(visitorObject)
-        }
 
+            }
+      // add the Object to the post
+      restaurantObject.visitors.push(visitorObject)
+          }
 
     // add the Object to the return value
     returnValue.push(restaurantObject)
@@ -93,5 +93,5 @@ exports.handler = async function(event) {
     body: JSON.stringify(returnValue)
   }
 
-  }
+
 }
