@@ -74,10 +74,23 @@ firebase.auth().onAuthStateChanged(async function(user) {
             <div class="md:mx-0 mx-4">
             <span>${restaurant.rating}/5 Stars</span>
           </div> 
-          <button class="id = visited-${restaurantId} text-blue-500 font-bold md:mx-0 mx-4">
-          <span>Mark as Visited</span>
-        </button> 
+          <button class="id = visited-${restaurantId} text-blue-500 font-bold md:mx-0 mx-4">Mark as Visited</button> 
           </div>`)
+
+      // get a reference to the visited button
+      let visitButton = document.querySelector(`#visited-${restaurantId}`)
+
+      // event handler for the visit button
+      visitButton.addEventListener(`click`, async function(event) {
+        // create the URL for our visit lambda function
+        let url = `/.netlify/functions/create-visit?userUid=${user.uid}&restaurantId=${restaurantId}`
+
+        // fetch the URL, wait for the response, store the response in memory
+        let response = await fetch(url)
+
+        // refresh the page
+        location.reload()
+      })
       
 
       }
