@@ -1,7 +1,7 @@
 let firebase = require('./firebase')
 
-exports.handler = async function(event) {
-  
+exports.handler = async function (event) {
+
   // define an empty Array to hold the return value from our lambda
   let returnValue = []
 
@@ -16,7 +16,7 @@ exports.handler = async function(event) {
 
   console.log(restaurants.length)
   // loop through the restaurant documents
-  for (let restaurantIndex=0; restaurantIndex < restaurants.length; restaurantIndex++) {
+  for (let restaurantIndex = 0; restaurantIndex < restaurants.length; restaurantIndex++) {
     // get the id from the document
     let restaurantId = restaurants[restaurantIndex].id
 
