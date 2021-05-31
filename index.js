@@ -47,14 +47,14 @@ firebase.auth().onAuthStateChanged(async function(user) {
         // Loop through the JSON data, for each Object representing a restaurant:
         for (let i=0; i < json.length; i++) {  
     
-          // Store each object ("post") in memory
+          // Store each object ("restaurant") in memory
           let restaurant = json[i]
 
           // Store restaurant ID
           let restaurantId = restaurant.id
 
-          // Create an empty string for the dishes
-          let dishes = ``
+          // // Create an empty string for the dishes -- commented since we want the dishes to only show up in the my restaurants page
+          // let dishes = ``
     
           // Create some markup using the post data, insert into the "posts" element
           restaurantsDiv.insertAdjacentHTML(`beforeend`,
