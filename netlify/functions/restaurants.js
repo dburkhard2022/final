@@ -54,26 +54,29 @@ exports.handler = async function(event) {
             userUid: visitorData.userUid,
             dishes: []
           }
-            //           // get the visitors for this post, wait for it to return, store in memory
-            // let dishesQuery = await db.collection(`dishes`).where(`restaurantId`, `==`, restaurantId).get()
+                      // get the dishes for this post, wait for it to return, store in memory
+            let dishesQuery = await db.collection(`dishes`).where(`restaurantId`, `==`, restaurantId).get()
 
-            // // get the documents from the query
-            // let visitors = visitorsQuery.docs
+            // get the documents from the query
+            let dishes = dishesQuery.docs
         
-            // // loop through the comment documents
-            // for (let visitorIndex=0; visitorIndex < visitors.length; visitorIndex++) {
-            //   // get the id from the visitor document
-            //   let visitorId = visitors[visitorIndex].id
+            // loop through the dish documents
+            for (let dishIndex=0; dishIndex < dishes.length; dishIndex++) {
+              // get the id from the dish document
+              let dishId = dishes[dishIndex].id
         
-            //   // get the data from the visitor document
-            //   let visitorData = visitors[visitorIndex].data()
+              // get the data from the dish document
+              let dishData = dishes[dishIndex].data()
         
-            //   // create an Object to be added to the visitors Array of the post
-            //   let visitorObject = {
-            //     id: visitorId,
-            //     userName: visitorData.userEmail
-            //     dishes:
-            //   }
+              // create an Object to be added to the dishes Array of the post
+              let dishObject = {
+                id: dishId,
+                userName: visitorData.userName,
+                body: dishData.body
+              }
+
+              // add the object to the visitor
+              visitorObject.dishes.push(dishObject)
 
           // add the Object to the post
           restaurantObject.visitors.push(visitorObject)

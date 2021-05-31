@@ -52,6 +52,9 @@ firebase.auth().onAuthStateChanged(async function(user) {
 
           // Store restaurant ID
           let restaurantId = restaurant.id
+
+          // Create an empty string for the dishes
+          let dishes = ``
     
           // Create some markup using the post data, insert into the "posts" element
           restaurantsDiv.insertAdjacentHTML(`beforeend`,
