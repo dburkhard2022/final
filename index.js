@@ -44,6 +44,9 @@ firebase.auth().onAuthStateChanged(async function(user) {
     // Grab a reference to the element with class name "restaurants" in memory
     let restaurantsDiv = document.querySelector(`.restaurants`)
 
+    let userUid = user.uid
+    console.log(userUid)
+
         // Loop through the JSON data, for each Object representing a restaurant:
         for (let i=0; i < json.length; i++) {  
     
@@ -51,11 +54,24 @@ firebase.auth().onAuthStateChanged(async function(user) {
           let restaurant = json[i]
 
           // Store restaurant ID
-          let restaurantId = restaurant.id
+          let restaurantId = restaurant.restaurantId
+          // console.log(restaurantId)
 
-          // // Create an empty string for the dishes -- commented since we want the dishes to only show up in the my restaurants page
-          // let dishes = ``
-    
+          let userUidArray = []
+
+          console.log(restaurant.visitors.length)
+
+          for (let visitorIndex=0; visitorIndex < restaurant.visitors.length; visitorIndex++) {
+            // create an Object to be added to the dishes Array of the post
+            let userUidCurrent = restaurant.visitors[visitorIndex].userUid
+            
+            // add the object to the visitor
+            userUidArray.push(userUidCurrent)
+          }
+
+          console.log(userUidArray)
+          
+          if (userUidArray.includes(user.uid)) {
           // Create some markup using the post data, insert into the "posts" element
           restaurantsDiv.insertAdjacentHTML(`beforeend`,
           `<div class="md:w-1/3 p-8">
@@ -74,23 +90,47 @@ firebase.auth().onAuthStateChanged(async function(user) {
             <div class="md:mx-0 mx-4">
             <span>${restaurant.rating}/5 Stars</span>
           </div> 
-          <button class="id = visited-${restaurantId} text-blue-500 font-bold md:mx-0 mx-4">Mark as Visited</button> 
+          <div id = "visited-${restaurantId}" class="text-blue-500 font-bold md:mx-0 mx-4">Visited</div> 
           </div>`)
+          } else {
+            restaurantsDiv.insertAdjacentHTML(`beforeend`,
+            `<div class="md:w-1/3 p-8">
+              <div class="md:mx-0 mx-4 mt-8">
+                <span class="text-blue-500 font-bold text-xl">${restaurant.name}</span>
+              </div>
+              <div class="my-2">
+                <img src="${restaurant.imageURL}" class="w-full">
+              </div>
+              <div class="md:mx-0 mx-4">
+              <span>${restaurant.cuisine}</span>
+              </div>
+              <div class="md:mx-0 mx-4">
+                <span>${restaurant.neighborhood}</span>
+              </div>
+              <div class="md:mx-0 mx-4">
+              <span>${restaurant.rating}/5 Stars</span>
+            </div> 
+            <button id = "visited-${restaurantId}" class="text-blue-500 font-bold md:mx-0 mx-4">Mark as Visited</button> 
+            </div>`)
 
-      // get a reference to the visited button
-      let visitButton = document.querySelector(`#visited-${restaurantId}`)
+            // get a reference to the visited button
+            let visitButton = document.querySelector(`#visited-${restaurantId}`)
 
-      // event handler for the visit button
-      visitButton.addEventListener(`click`, async function(event) {
-        // create the URL for our visit lambda function
-        let url = `/.netlify/functions/create-visit?userUid=${user.uid}&restaurantId=${restaurantId}`
+            // event handler for the visit button
+            visitButton.addEventListener(`click`, async function(event) {
+            // create the URL for our visit lambda function
+            let url = `/.netlify/functions/create-visit?userUid=${userUid}&restaurantId=${restaurantId}`
 
-        // fetch the URL, wait for the response, store the response in memory
-        let response = await fetch(url)
+            // fetch the URL, wait for the response, store the response in memory
+            let response = await fetch(url)
 
-        // refresh the page
-        location.reload()
+            // refresh the page
+            location.reload()
+      
       })
+          
+          }
+
       
 
       }
