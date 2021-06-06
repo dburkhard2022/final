@@ -52,33 +52,8 @@ exports.handler = async function (event) {
           let visitorObject = {
             visitorId: visitorId,
             userUid: visitorData.userUid,
-            dishes: []
           }
-            // get the dishes for this post, wait for it to return, store in memory
-            let dishesQuery = await db.collection(`dishes`).where(`restaurantId`, `==`, restaurantId).get()
 
-            // get the documents from the query
-            let dishes = dishesQuery.docs
-        
-            // loop through the dish documents
-            for (let dishIndex=0; dishIndex < dishes.length; dishIndex++) {
-              // get the id from the dish document
-              let dishId = dishes[dishIndex].id
-        
-              // get the data from the dish document
-              let dishData = dishes[dishIndex].data()
-        
-              // create an Object to be added to the dishes Array of the post
-              let dishObject = {
-                dishId: dishId,
-                dishName: dishData.dishName,
-              }
-
-              // add the object to the visitor
-              visitorObject.dishes.push(dishObject)
-
-
-            }
       // add the Object to the post
       restaurantObject.visitors.push(visitorObject)
           }

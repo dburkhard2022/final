@@ -62,7 +62,7 @@ firebase.auth().onAuthStateChanged(async function(user) {
           console.log(restaurant.visitors.length)
 
           for (let visitorIndex=0; visitorIndex < restaurant.visitors.length; visitorIndex++) {
-            // create an Object to be added to the dishes Array of the post
+            // create an Object to be added to the visitor Array of the post
             let userUidCurrent = restaurant.visitors[visitorIndex].userUid
             
             // add the object to the visitor
